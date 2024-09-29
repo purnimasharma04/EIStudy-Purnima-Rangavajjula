@@ -1,15 +1,15 @@
 # EI.Study-Coding Exercises 
 
-🖥️ Coding Exercise Practice by EI Study
+# 🖥️ Coding Exercise Practice by EI Study
 Welcome to my coding exercise repository! This project is a collection of thoughtfully curated coding challenges, assigned by EI Study, aimed at refining my problem-solving skills and showcasing my expertise in data structures, algorithms, and efficient code practices. 🌟
 
-💡 Objective
+# 💡 Objective
 The primary goal of these exercises is to solve complex problems with optimal solutions while adhering to clean, maintainable, and scalable coding standards. Through this practice, I aim to:
 Strengthen my proficiency in Java
 Tackle algorithmic challenges involving time complexity, space optimization, and edge case handling
 Demonstrate my ability to think critically and write efficient, production-ready code 🚀
 
-🛠️ Tools and Technologies
+# 🛠️ Tools and Technologies
 Programming Languages: Java
 Algorithms: Greedy, Dynamic Programming, Graphs, Recursion, Backtracking, and more
 Data Structures: Arrays, Linked Lists, Trees, Stacks, Queues, HashMaps, Heaps, and Graphs
@@ -34,6 +34,6 @@ The goal of this exercise is to demonstrate best coding practices, effective use
 
 
 
-💬 Let's Connect!
+# 💬 Let's Connect!
 I'm always eager to discuss problem-solving approaches, coding best practices, or potential opportunities. 
 Feel free to reach out to me at purnisharma04@gmail.com or connect with me on LinkedIn.
