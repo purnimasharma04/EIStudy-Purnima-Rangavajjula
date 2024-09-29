@@ -16,15 +16,15 @@ Data Structures: Arrays, Linked Lists, Trees, Stacks, Queues, HashMaps, Heaps, a
 Version Control: Git and GitHub
 
 # 1. 🎯 Design Patterns 
-1️⃣ Behavioral Design Patterns
+Behavioral Design Patterns
         a. Observer Pattern, Use Case: Weather Station
         b. Strategy Pattern, Use Case: Shopping Cart with Different Payment Methods
 
-2️⃣ Creational Design Patterns
+Creational Design Patterns
         a. Factory Pattern, Use Case: Logistics Application
         b. Builder Pattern, Use Case: Computer Configuration
 
-3️⃣ Structural Design Patterns
+Structural Design Patterns
         a. Adapter Pattern, Use Case: Media Player
 
 # 2. 🎯 Smart Office Facility Management System
@@ -35,4 +35,5 @@ The goal of this exercise is to demonstrate best coding practices, effective use
 
 
 💬 Let's Connect!
-I'm always eager to discuss problem-solving approaches, coding best practices, or potential opportunities. Feel free to reach out to me at purnisharma04@gmail.com or connect with me on LinkedIn.
+I'm always eager to discuss problem-solving approaches, coding best practices, or potential opportunities. 
+Feel free to reach out to me at purnisharma04@gmail.com or connect with me on LinkedIn.
