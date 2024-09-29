@@ -17,15 +17,20 @@ Version Control: Git and GitHub
 
 # 1. 🎯 Design Patterns 
 Behavioral Design Patterns
-        a. Observer Pattern, Use Case: Weather Station
-        b. Strategy Pattern, Use Case: Shopping Cart with Different Payment Methods
+        a. Observer Pattern
+           Use Case: Weather Station
+        b. Strategy Pattern
+           Use Case: Shopping Cart with Different Payment Methods
 
 Creational Design Patterns
-        a. Factory Pattern, Use Case: Logistics Application
-        b. Builder Pattern, Use Case: Computer Configuration
+        a. Factory Pattern
+           Use Case: Logistics Application
+        b. Builder Pattern
+           Use Case: Computer Configuration
 
 Structural Design Patterns
-        a. Adapter Pattern, Use Case: Media Player
+        a. Adapter Pattern
+           Use Case: Media Player
 
 # 2. 🎯 Smart Office Facility Management System
 Welcome to the Smart Office Facility Management System! This console-based application is designed to efficiently manage conference room bookings, occupancy detection, and automate controls for air conditioning and lighting in a smart office environment.
