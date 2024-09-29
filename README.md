@@ -1,5 +1,8 @@
 # EI.Study-Coding Exercises 
 
+👩‍💻Hello Everyone, I am Purnima Rangavajjula, B.Tech CSE (2021-2025)
+Passionate about building efficient, scalable, and innovative solutions using modern technologies. My repository features projects focused on web development, AI/ML applications. Constantly exploring new challenges, refining my skills, and striving to contribute to impactful projects. Let's collaborate and create!
+
 Welcome to my coding exercise repository! This project is a collection of thoughtfully curated coding challenges, assigned by EI Study, aimed at refining my problem-solving skills and showcasing my expertise in data structures, algorithms, and efficient code practices. 🌟
 
 # 💡 Objective
