@@ -16,19 +16,19 @@ Data Structures: Arrays, Linked Lists, Trees, Stacks, Queues, HashMaps, Heaps, a
 Version Control: Git and GitHub
 
 # 1. 🎯 Design Patterns 
-Behavioral Design Patterns
+# Behavioral Design Patterns
         a. Observer Pattern
            Use Case: Weather Station
         b. Strategy Pattern
            Use Case: Shopping Cart with Different Payment Methods
 
-Creational Design Patterns
+# Creational Design Patterns
         a. Factory Pattern
            Use Case: Logistics Application
         b. Builder Pattern
            Use Case: Computer Configuration
 
-Structural Design Patterns
+# Structural Design Patterns
         a. Adapter Pattern
            Use Case: Media Player
 
