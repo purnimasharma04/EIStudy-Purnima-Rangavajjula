@@ -1,6 +1,5 @@
 # EI.Study-Coding Exercises 
 
-# 🖥️ Coding Exercise Practice by EI Study
 Welcome to my coding exercise repository! This project is a collection of thoughtfully curated coding challenges, assigned by EI Study, aimed at refining my problem-solving skills and showcasing my expertise in data structures, algorithms, and efficient code practices. 🌟
 
 # 💡 Objective
