@@ -33,6 +33,8 @@ Version Control: Git and GitHub
 # Structural Design Patterns
         a. Adapter Pattern
            Use Case: Media Player
+        b. Decorator Pattern
+           Use Case: Coffee Shop
 
 # 2. 🎯 Smart Office Facility Management System
 Welcome to the Smart Office Facility Management System! This console-based application is designed to efficiently manage conference room bookings, occupancy detection, and automate controls for air conditioning and lighting in a smart office environment.
