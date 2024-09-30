@@ -12,10 +12,7 @@ Tackle algorithmic challenges involving time complexity, space optimization, and
 Demonstrate my ability to think critically and write efficient, production-ready code 🚀
 
 # 🛠️ Tools and Technologies
-Programming Languages: Java
-Algorithms: Greedy, Dynamic Programming, Graphs, Recursion, Backtracking, and more
-Data Structures: Arrays, Linked Lists, Trees, Stacks, Queues, HashMaps, Heaps, and Graphs
-Version Control: Git and GitHub
+Java, JDK, Java Logging API, VS Code, Git, Github 
 
 # 1. 🎯 Design Patterns 
 # Behavioral Design Patterns
@@ -45,4 +42,4 @@ The goal of this exercise is to demonstrate best coding practices, effective use
 
 # 💬 Let's Connect!
 I'm always eager to discuss problem-solving approaches, coding best practices, or potential opportunities. 
-Feel free to reach out to me at purnisharma04@gmail.com or connect with me on LinkedIn.
+Feel free to reach out to me at purnisharma04@gmail.com or connect with me on LinkedIn - purnima-rangavajjula.
