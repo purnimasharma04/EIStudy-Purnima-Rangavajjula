@@ -1,178 +1,283 @@
-import datetime
-from abc import ABC, abstractmethod
-from typing import List, Dict
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
-# Singleton Pattern
-class OfficeFacility:
-    _instance = None
+// Singleton Pattern
+class OfficeFacility {
+    private static OfficeFacility instance;
+    private Map<Integer, Room> rooms;
 
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance.rooms = {}
-        return cls._instance
+    private OfficeFacility() {
+        rooms = new HashMap<>();
+    }
 
-    def configure_rooms(self, room_count: int):
-        self.rooms = {i: Room(i) for i in range(1, room_count + 1)}
-        return f"Office configured with {room_count} meeting rooms: " + ", ".join([f"Room {i}" for i in range(1, room_count + 1)])
+    public static OfficeFacility getInstance() {
+        if (instance == null) {
+            instance = new OfficeFacility();
+        }
+        return instance;
+    }
 
-    def set_room_capacity(self, room_number: int, capacity: int):
-        if room_number not in self.rooms:
-            return f"Room {room_number} does not exist."
-        if capacity <= 0:
-            return "Invalid capacity. Please enter a valid positive number."
-        self.rooms[room_number].set_capacity(capacity)
-        return f"Room {room_number} maximum capacity set to {capacity}."
+    public String configureRooms(int roomCount) {
+        rooms.clear();
+        for (int i = 1; i <= roomCount; i++) {
+            rooms.put(i, new Room(i));
+        }
+        return String.format("Office configured with %d meeting rooms: %s", roomCount,
+                String.join(", ", rooms.keySet().stream().map(k -> "Room " + k).toArray(String[]::new)));
+    }
 
-    def get_room(self, room_number: int):
-        return self.rooms.get(room_number)
+    public String setRoomCapacity(int roomNumber, int capacity) {
+        if (!rooms.containsKey(roomNumber)) {
+            return String.format("Room %d does not exist.", roomNumber);
+        }
+        if (capacity <= 0) {
+            return "Invalid capacity. Please enter a valid positive number.";
+        }
+        rooms.get(roomNumber).setCapacity(capacity);
+        return String.format("Room %d maximum capacity set to %d.", roomNumber, capacity);
+    }
 
-# Observer Pattern
-class OccupancyObserver(ABC):
-    @abstractmethod
-    def update(self, is_occupied: bool):
-        pass
+    public Room getRoom(int roomNumber) {
+        return rooms.get(roomNumber);
+    }
+}
 
-class ACSystem(OccupancyObserver):
-    def update(self, is_occupied: bool):
-        if is_occupied:
-            print("AC turned on.")
-        else:
-            print("AC turned off.")
+// Observer Pattern
+interface OccupancyObserver {
+    void update(boolean isOccupied);
+}
 
-class LightingSystem(OccupancyObserver):
-    def update(self, is_occupied: bool):
-        if is_occupied:
-            print("Lights turned on.")
-        else:
-            print("Lights turned off.")
+class ACSystem implements OccupancyObserver {
+    @Override
+    public void update(boolean isOccupied) {
+        System.out.println(isOccupied ? "AC turned on." : "AC turned off.");
+    }
+}
 
-class Room:
-    def __init__(self, room_number: int):
-        self.room_number = room_number
-        self.capacity = 0
-        self.occupants = 0
-        self.booking = None
-        self.observers: List[OccupancyObserver] = [ACSystem(), LightingSystem()]
-        self.last_occupied_time = None
+class LightingSystem implements OccupancyObserver {
+    @Override
+    public void update(boolean isOccupied) {
+        System.out.println(isOccupied ? "Lights turned on." : "Lights turned off.");
+    }
+}
 
-    def set_capacity(self, capacity: int):
-        self.capacity = capacity
+class Room {
+    private int roomNumber;
+    private int capacity;
+    private int occupants;
+    private Booking booking;
+    private List<OccupancyObserver> observers;
+    private LocalDateTime lastOccupiedTime;
 
-    def add_occupants(self, count: int):
-        if count < 2:
-            return f"Room {self.room_number} occupancy insufficient to mark as occupied."
-        self.occupants += count
-        self.last_occupied_time = datetime.datetime.now()
-        self.notify_observers(True)
-        return f"Room {self.room_number} is now occupied by {self.occupants} persons. AC and lights turned on."
+    public Room(int roomNumber) {
+        this.roomNumber = roomNumber;
+        this.capacity = 0;
+        this.occupants = 0;
+        this.observers = new ArrayList<>();
+        observers.add(new ACSystem());
+        observers.add(new LightingSystem());
+    }
 
-    def remove_occupants(self, count: int):
-        self.occupants = max(0, self.occupants - count)
-        if self.occupants == 0:
-            self.notify_observers(False)
-            return f"Room {self.room_number} is now unoccupied. AC and lights turned off."
-        return f"Room {self.room_number} now has {self.occupants} occupants."
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
-    def notify_observers(self, is_occupied: bool):
-        for observer in self.observers:
-            observer.update(is_occupied)
+    public String addOccupants(int count) {
+        if (count < 2) {
+            return String.format("Room %d occupancy insufficient to mark as occupied.", roomNumber);
+        }
+        occupants += count;
+        lastOccupiedTime = LocalDateTime.now();
+        notifyObservers(true);
+        return String.format("Room %d is now occupied by %d persons. AC and lights turned on.", roomNumber, occupants);
+    }
 
-    def is_occupied(self):
-        return self.occupants > 0
+    public String removeOccupants(int count) {
+        occupants = Math.max(0, occupants - count);
+        if (occupants == 0) {
+            notifyObservers(false);
+            return String.format("Room %d is now unoccupied. AC and lights turned off.", roomNumber);
+        }
+        return String.format("Room %d now has %d occupants.", roomNumber, occupants);
+    }
 
-    def check_automatic_release(self):
-        if not self.is_occupied() and self.booking:
-            current_time = datetime.datetime.now()
-            if (current_time - self.last_occupied_time).total_seconds() > 300:  # 5 minutes
-                self.booking = None
-                return f"Room {self.room_number} is now unoccupied. Booking released. AC and lights off."
-        return None
+    private void notifyObservers(boolean isOccupied) {
+        for (OccupancyObserver observer : observers) {
+            observer.update(isOccupied);
+        }
+    }
 
-# Command Pattern
-class Command(ABC):
-    @abstractmethod
-    def execute(self):
-        pass
+    public boolean isOccupied() {
+        return occupants > 0;
+    }
 
-class BookRoomCommand(Command):
-    def __init__(self, room: Room, start_time: datetime.datetime, duration: int):
-        self.room = room
-        self.start_time = start_time
-        self.duration = duration
+    public String checkAutomaticRelease() {
+        if (!isOccupied() && booking != null) {
+            LocalDateTime currentTime = LocalDateTime.now();
+            if (currentTime.isAfter(lastOccupiedTime.plusMinutes(5))) {
+                booking = null;
+                return String.format("Room %d is now unoccupied. Booking released. AC and lights off.", roomNumber);
+            }
+        }
+        return null;
+    }
 
-    def execute(self):
-        if self.room.booking:
-            return f"Room {self.room.room_number} is already booked during this time. Cannot book."
-        self.room.booking = (self.start_time, self.duration)
-        return f"Room {self.room.room_number} booked from {self.start_time.strftime('%H:%M')} for {self.duration} minutes."
+    public Booking getBooking() {
+        return booking;
+    }
 
-class CancelBookingCommand(Command):
-    def __init__(self, room: Room):
-        self.room = room
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
+}
 
-    def execute(self):
-        if not self.room.booking:
-            return f"Room {self.room.room_number} is not booked. Cannot cancel booking."
-        self.room.booking = None
-        return f"Booking for Room {self.room.room_number} cancelled successfully."
+class Booking {
+    private LocalDateTime startTime;
+    private int duration;
 
-class SmartOfficeSystem:
-    def __init__(self):
-        self.office = OfficeFacility()
+    public Booking(LocalDateTime startTime, int duration) {
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+}
 
-    def execute_command(self, command: Command):
-        return command.execute()
+// Command Pattern
+interface Command {
+    String execute();
+}
 
-    def process_input(self, input_string: str):
-        parts = input_string.split()
-        command = parts[0].lower()
+class BookRoomCommand implements Command {
+    private Room room;
+    private LocalDateTime startTime;
+    private int duration;
 
-        if command == "config":
-            if parts[1] == "room" and parts[2] == "count":
-                return self.office.configure_rooms(int(parts[3]))
-            elif parts[1] == "room" and parts[2] == "max" and parts[3] == "capacity":
-                return self.office.set_room_capacity(int(parts[4]), int(parts[5]))
+    public BookRoomCommand(Room room, LocalDateTime startTime, int duration) {
+        this.room = room;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
 
-        elif command == "add" and parts[1] == "occupant":
-            room = self.office.get_room(int(parts[2]))
-            if room:
-                return room.add_occupants(int(parts[3]))
-            return f"Room {parts[2]} does not exist."
+    @Override
+    public String execute() {
+        if (room.getBooking() != null) {
+            return String.format("Room %d is already booked during this time. Cannot book.", room.roomNumber);
+        }
+        room.setBooking(new Booking(startTime, duration));
+        return String.format("Room %d booked from %s for %d minutes.", room.roomNumber,
+                startTime.format(DateTimeFormatter.ofPattern("HH:mm")), duration);
+    }
+}
 
-        elif command == "block" and parts[1] == "room":
-            room = self.office.get_room(int(parts[2]))
-            if room:
-                start_time = datetime.datetime.strptime(parts[3], "%H:%M")
-                duration = int(parts[4])
-                return self.execute_command(BookRoomCommand(room, start_time, duration))
-            return f"Room {parts[2]} does not exist."
+class CancelBookingCommand implements Command {
+    private Room room;
 
-        elif command == "cancel" and parts[1] == "room":
-            room = self.office.get_room(int(parts[2]))
-            if room:
-                return self.execute_command(CancelBookingCommand(room))
-            return f"Room {parts[2]} does not exist."
+    public CancelBookingCommand(Room room) {
+        this.room = room;
+    }
 
-        elif command == "room" and parts[1] == "status":
-            room = self.office.get_room(int(parts[2]))
-            if room:
-                return room.check_automatic_release() or f"Room {parts[2]} status: {'Occupied' if room.is_occupied() else 'Unoccupied'}"
-            return f"Room {parts[2]} does not exist."
+    @Override
+    public String execute() {
+        if (room.getBooking() == null) {
+            return String.format("Room %d is not booked. Cannot cancel booking.", room.roomNumber);
+        }
+        room.setBooking(null);
+        return String.format("Booking for Room %d cancelled successfully.", room.roomNumber);
+    }
+}
 
-        return "Invalid command. Please try again."
+class SmartOfficeSystem {
+    private OfficeFacility office;
 
-# Main execution
-if __name__ == "__main__":
-    system = SmartOfficeSystem()
-    print("Welcome to the Smart Office Facility Management System!")
-    print("Enter commands to interact with the system (type 'exit' to quit):")
+    public SmartOfficeSystem() {
+        this.office = OfficeFacility.getInstance();
+    }
 
-    while True:
-        user_input = input("> ")
-        if user_input.lower() == 'exit':
-            break
-        result = system.process_input(user_input)
-        print(result)
+    public String executeCommand(Command command) {
+        return command.execute();
+    }
 
-    print("Thank you for using the Smart Office Facility Management System!")
+    public String processInput(String input) {
+        String[] parts = input.split(" ");
+        String command = parts[0].toLowerCase();
+
+        switch (command) {
+            case "config":
+                if (parts[1].equals("room") && parts[2].equals("count")) {
+                    return office.configureRooms(Integer.parseInt(parts[3]));
+                } else if (parts[1].equals("room") && parts[2].equals("max") && parts[3].equals("capacity")) {
+                    return office.setRoomCapacity(Integer.parseInt(parts[4]), Integer.parseInt(parts[5]));
+                }
+                break;
+            case "add":
+                if (parts[1].equals("occupant")) {
+                    Room room = office.getRoom(Integer.parseInt(parts[2]));
+                    if (room != null) {
+                        return room.addOccupants(Integer.parseInt(parts[3]));
+                    }
+                    return String.format("Room %s does not exist.", parts[2]);
+                }
+                break;
+            case "block":
+                if (parts[1].equals("room")) {
+                    Room room = office.getRoom(Integer.parseInt(parts[2]));
+                    if (room != null) {
+                        LocalDateTime startTime = LocalDateTime.parse(parts[3], DateTimeFormatter.ofPattern("HH:mm"));
+                        int duration = Integer.parseInt(parts[4]);
+                        return executeCommand(new BookRoomCommand(room, startTime, duration));
+                    }
+                    return String.format("Room %s does not exist.", parts[2]);
+                }
+                break;
+            case "cancel":
+                if (parts[1].equals("room")) {
+                    Room room = office.getRoom(Integer.parseInt(parts[2]));
+                    if (room != null) {
+                        return executeCommand(new CancelBookingCommand(room));
+                    }
+                    return String.format("Room %s does not exist.", parts[2]);
+                }
+                break;
+            case "room":
+                if (parts[1].equals("status")) {
+                    Room room = office.getRoom(Integer.parseInt(parts[2]));
+                    if (room != null) {
+                        String automaticRelease = room.checkAutomaticRelease();
+                        if (automaticRelease != null) {
+                            return automaticRelease;
+                        }
+                        return String.format("Room %s status: %s", parts[2], room.isOccupied() ? "Occupied" : "Unoccupied");
+                    }
+                    return String.format("Room %s does not exist.", parts[2]);
+                }
+                break;
+        }
+
+        return "Invalid command. Please try again.";
+    }
+
+    public static void main(String[] args) {
+        SmartOfficeSystem system = new SmartOfficeSystem();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Smart Office Facility Management System!");
+        System.out.println("Enter commands to interact with the system (type 'exit' to quit):");
+
+        while (true) {
+            System.out.print("> ");
+            String userInput = scanner.nextLine();
+            if (userInput.equalsIgnoreCase("exit")) {
+                break;
+            }
+            String result = system.processInput(userInput);
+            System.out.println(result);
+        }
+
+        System.out.println("Thank you for using the Smart Office Facility Management System!");
+        scanner.close();
+    }
+}
